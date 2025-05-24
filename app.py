@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
+import pandas as pd
 
 # Modelo SEIRD-M
 def seirdm(y, t, beta, sigma, alfa, gamma, gammaq, mu, muq, N):
@@ -18,7 +19,7 @@ st.title("Simulador SEIRD-M")
 
 # Entradas
 N = st.number_input("População Total", value=200_000)
-beta = st.slider("Taxa de Transmissão (β)", 0.1, 2.0, 1.2)
+beta = st.text_input("Taxa de Transmissão (β)", "")
 alfa = st.slider("Taxa de Quarentena (α)", 0.0, 1.0, 0.2)
 sigma = 1/5.2
 gamma = 1/14
@@ -32,7 +33,7 @@ y0 = [S0, E0, I0, Q0, R0, D0]
 t = np.linspace(0, 180, 180)
 
 # Resolver ODE
-sol = odeint(seirdm, y0, t, args=(beta, sigma, alfa, gamma, gammaq, mu, muq, N))
+sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), sigma, alfa, gamma, gammaq, mu, muq, N))
 S, E, I, Q, R, D = sol.T
 
 # Gráfico
