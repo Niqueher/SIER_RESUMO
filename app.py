@@ -20,20 +20,21 @@ st.title("Simulador SEIRD-M")
 # Entradas
 N = st.number_input("População Total", value=200_000)
 beta = st.text_input("Taxa de Transmissão (β)", "")
-alfa = st.slider("Taxa de Quarentena (α)", 0.0, 1.0, 0.2)
-sigma = 1/5.2
-gamma = 1/14
-gammaq = 1/2
-mu = 0.25
-muq = 0.125
+alfa = st.text_input("Taxa de Quarentena (α)", "")
+sigma = st.text_input("Tempo de Incubação em Dias (σ)", "")
+gamma = st.text_input("Tempo de Recuperação em Dias (σ)", "")
+gammaq = st.text_input("Tempo de incubação em dias de Indivíduos em Quarentena (σq)", "")
+mu = st.text_input("Taxa de Letalidade (μ)", "")
+muq = st.text_input("Taxa de Letalidade de Indivíduos em Quarentena (μq)", "")
+time = st.text_input("Número máximo de dias", "")
 
 # Condições iniciais
 S0, E0, I0, Q0, R0, D0 = N - 1, 0, 1, 0, 0, 0
 y0 = [S0, E0, I0, Q0, R0, D0]
-t = np.linspace(0, 180, 180)
+t = np.linspace(0, time, time)
 
 # Resolver ODE
-sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), sigma, alfa, gamma, gammaq, mu, muq, N))
+sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), 1/sigma, alfa, gamma, gammaq, mu, muq, N))
 S, E, I, Q, R, D = sol.T
 
 # Gráfico
