@@ -69,6 +69,7 @@ st.pyplot(fig)
 
 
 # Gráfico animado
+fps = st.text_input("Velocidade do GIF em FPS", "")
 fig2, ax2 = plt.subplots()
 lines = {
     'S': ax2.plot([], [], label="Suscetíveis")[0],
@@ -93,8 +94,6 @@ def update(frame):
 ani = FuncAnimation(fig2, update, frames=len(t), interval=50, blit=True)
 
 # Salvar como GIF
-fps = st.text_input("Velocidade do GIF em FPS", "")
-
 gif_buffer = io.BytesIO()
 writer = PillowWriter(fps=pd.to_numeric(fps))
 ani.save("animacao.gif", writer=writer)
