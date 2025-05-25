@@ -93,8 +93,10 @@ def update(frame):
 ani = FuncAnimation(fig2, update, frames=len(t), interval=50, blit=True)
 
 # Salvar como GIF
+fps = st.text_input("Velocidade do GIF em FPS", "")
+
 gif_buffer = io.BytesIO()
-writer = PillowWriter(fps=10)
+writer = PillowWriter(fps=pd.to_numeric(fps))
 ani.save("animacao.gif", writer=writer)
 with open("animacao.gif", "rb") as f:
     gif_bytes = f.read()
@@ -103,7 +105,7 @@ gif_buffer = io.BytesIO(gif_bytes)
 
 
 # Mostrar GIF
-st.image(gif_buffer, caption="Evolução da Epidemia (GIF)", use_column_width=True)
+st.image(gif_buffer, caption="Evolução da Epidemia (GIF)", use_container_width=True)
 
 # Download do GIF
 b64 = base64.b64encode(gif_buffer.read()).decode()
