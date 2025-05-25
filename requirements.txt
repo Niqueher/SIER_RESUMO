@@ -4,4 +4,4 @@ numpy
 scipy
 pandas
 plotly
-pillow
+Pillow
