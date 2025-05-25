@@ -4,6 +4,5 @@ numpy
 scipy
 pandas
 plotly
-io
-PIL
+Pillow
 base64
