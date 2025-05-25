@@ -4,3 +4,6 @@ numpy
 scipy
 pandas
 plotly
+io
+PIL
+base64
