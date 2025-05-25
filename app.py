@@ -78,7 +78,7 @@ lines = {
     'R': ax2.plot([], [], label="Recuperados")[0],
     'D': ax2.plot([], [], label="Mortos")[0],
 }
-ax2.set_xlim(0, time)
+ax2.set_xlim(0, days)
 ax2.set_ylim(0, N)
 ax2.set_xlabel("Dias")
 ax2.set_ylabel("Número de Pessoas")
