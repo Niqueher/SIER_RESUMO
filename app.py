@@ -40,7 +40,13 @@ y0 = [S0, E0, I0, Q0, R0, D0]
 if not np.isnan(days):
     t = np.linspace(0, days, days)
 else:
-    t = np.linspace(0, years, years)
+    if years % 4 == 0:
+        days = ((years/4)*366)+((years-(years/4))*365)
+        t = np.linspace(0, days, days)
+    else:
+        days = years*365
+        t = np.linspace(0, days, days)
+        
 
 # Resolver ODE
 sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), 1/pd.to_numeric(sigma), pd.to_numeric(alfa), 1/pd.to_numeric(gamma), 1/pd.to_numeric(gammaq), 
