@@ -3,10 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
 import pandas as pd
-from matplotlib.animation import FuncAnimation, PillowWriter
-import io
-from PIL import Image
-import base64
 
 # Modelo SEIRD-M
 def seirdm(y, t, beta, sigma, alfa, gamma, gammaq, mu, muq, N):
@@ -66,40 +62,3 @@ ax.set_ylabel("Número de Pessoas")
 ax.set_title("Dinâmica da Doença")
 ax.legend()
 st.pyplot(fig)
-
-
-# Gráfico animado
-fps = st.text_input("Velocidade do GIF em FPS", "10")  # Valor padrão
-fig2, ax2 = plt.subplots()
-lines = {
-    'S': ax2.plot([], [], label="Suscetíveis")[0],
-    'E': ax2.plot([], [], label="Expostos")[0],
-    'I': ax2.plot([], [], label="Infectados")[0],
-    'Q': ax2.plot([], [], label="Quarentena")[0],
-    'R': ax2.plot([], [], label="Recuperados")[0],
-    'D': ax2.plot([], [], label="Mortos")[0],
-}
-ax2.set_xlim(0, max(t))
-ax2.set_ylim(0, N)
-ax2.set_xlabel("Dias")
-ax2.set_ylabel("Número de Pessoas")
-ax2.set_title("Evolução da Doença ao Longo do Tempo")
-ax2.legend()
-
-def update(frame):
-    for key, data in zip(['S', 'E', 'I', 'Q', 'R', 'D'], [S, E, I, Q, R, D]):
-        lines[key].set_data(t[:frame], data[:frame])
-    return lines.values()
-
-ani = FuncAnimation(fig2, update, frames=len(t), interval=50, blit=True)
-
-# Salvar GIF diretamente em memória (sem gravar em disco)
-gif_buffer = io.BytesIO()
-writer = PillowWriter(fps=pd.to_numeric(fps))
-ani.save(gif_buffer, writer=writer)
-gif_buffer.seek(0)
-
-# Apenas opção de download (sem exibir o GIF no app)
-b64 = base64.b64encode(gif_buffer.read()).decode()
-href = f'<a href="data:application/octet-stream;base64,{b64}" download="seirdm_animacao.gif">📥 Baixar animação em GIF</a>'
-st.markdown(href, unsafe_allow_html=True)
