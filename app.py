@@ -95,8 +95,12 @@ ani = FuncAnimation(fig2, update, frames=len(t), interval=50, blit=True)
 # Salvar como GIF
 gif_buffer = io.BytesIO()
 writer = PillowWriter(fps=10)
-ani.save(gif_buffer, writer=writer)
-gif_buffer.seek(0)
+ani.save("animacao.gif", writer=writer)
+with open("animacao.gif", "rb") as f:
+    gif_bytes = f.read()
+
+gif_buffer = io.BytesIO(gif_bytes)
+
 
 # Mostrar GIF
 st.image(gif_buffer, caption="Evolução da Epidemia (GIF)", use_column_width=True)
