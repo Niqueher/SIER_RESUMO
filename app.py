@@ -69,7 +69,7 @@ st.pyplot(fig)
 
 
 # Gráfico animado
-fps = st.text_input("Velocidade do GIF em FPS", "")
+fps = st.text_input("Velocidade do GIF em FPS", "10")  # Valor padrão
 fig2, ax2 = plt.subplots()
 lines = {
     'S': ax2.plot([], [], label="Suscetíveis")[0],
@@ -93,20 +93,13 @@ def update(frame):
 
 ani = FuncAnimation(fig2, update, frames=len(t), interval=50, blit=True)
 
-# Salvar como GIF
+# Salvar GIF diretamente em memória (sem gravar em disco)
 gif_buffer = io.BytesIO()
 writer = PillowWriter(fps=pd.to_numeric(fps))
-ani.save("animacao.gif", writer=writer)
-with open("animacao.gif", "rb") as f:
-    gif_bytes = f.read()
+ani.save(gif_buffer, writer=writer)
+gif_buffer.seek(0)
 
-gif_buffer = io.BytesIO(gif_bytes)
-
-
-# Mostrar GIF
-st.image(gif_buffer, caption="Evolução da Epidemia (GIF)", use_container_width=True)
-
-# Download do GIF
+# Apenas opção de download (sem exibir o GIF no app)
 b64 = base64.b64encode(gif_buffer.read()).decode()
-href = f'<a href="data:application/octet-stream;base64,{b64}" download="seirdm_animacao.gif">\U0001F4E5 Baixar animação em GIF</a>'
+href = f'<a href="data:application/octet-stream;base64,{b64}" download="seirdm_animacao.gif">📥 Baixar animação em GIF</a>'
 st.markdown(href, unsafe_allow_html=True)
