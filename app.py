@@ -37,7 +37,7 @@ years = pd.to_numeric(st.text_input("Tempo Máximo em Anos", ""))
 S0, E0, I0, Q0, R0, D0 = N - 1, 0, 1, 0, 0, 0
 y0 = [S0, E0, I0, Q0, R0, D0]
 
-if days.isnumeric() == TRUE:
+if not np.isnan(days)::
     t = np.linspace(0, days, days)
 else:
     t = np.linspace(0, years, years)
