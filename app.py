@@ -26,7 +26,7 @@ gamma = st.text_input("Tempo de Recuperação em Dias (σ)", "")
 gammaq = st.text_input("Tempo de incubação em dias de Indivíduos em Quarentena (σq)", "")
 mu = st.text_input("Taxa de Letalidade (μ)", "")
 muq = st.text_input("Taxa de Letalidade de Indivíduos em Quarentena (μq)", "")
-time = st.text_input("Número máximo de dias", "")
+time = pd.to_numeric(st.text_input("Número máximo de dias", ""))
 
 # Condições iniciais
 S0, E0, I0, Q0, R0, D0 = N - 1, 0, 1, 0, 0, 0
