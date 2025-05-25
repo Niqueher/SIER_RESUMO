@@ -34,7 +34,8 @@ y0 = [S0, E0, I0, Q0, R0, D0]
 t = np.linspace(0, time, time)
 
 # Resolver ODE
-sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), 1/sigma, alfa, gamma, gammaq, mu, muq, N))
+sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), 1/pd.to_numeric(sigma), pd.to_numeric(alfa), 1/pd.to_numeric(gamma), 1/pd.to_numeric(gammaq), 
+                                  pd.to_numeric(mu), pd.to_numeric(muq), pd.to_numeric(N)))
 S, E, I, Q, R, D = sol.T
 
 # Gráfico
