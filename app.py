@@ -41,11 +41,11 @@ if not np.isnan(days):
     t = np.linspace(0, days, days)
 else:
     if years % 4 == 0:
-        days = ((years/4)*366)+((years-(years/4))*365)
-        t = np.linspace(0, days, days)
+        daysy = ((years/4)*366)+((years-(years/4))*365)
+        t = np.linspace(0, daysy, daysy)
     else:
-        days = years*365
-        t = np.linspace(0, days, days)
+        daysy = years*365
+        t = np.linspace(0, daysy, daysy)
         
 
 # Resolver ODE
@@ -53,7 +53,7 @@ sol = odeint(seirdm, y0, t, args=(pd.to_numeric(beta), 1/pd.to_numeric(sigma), p
                                   pd.to_numeric(mu), pd.to_numeric(muq), pd.to_numeric(N)))
 S, E, I, Q, R, D = sol.T
 
-# Gráfico
+# Gráfico estático
 fig, ax = plt.subplots()
 ax.plot(t, S, label="Suscetíveis")
 ax.plot(t, E, label="Expostos")
@@ -68,7 +68,7 @@ ax.legend()
 st.pyplot(fig)
 
 
-# Criar figura para animação
+# Gráfico animado
 fig2, ax2 = plt.subplots()
 lines = {
     'S': ax2.plot([], [], label="Suscetíveis")[0],
@@ -92,15 +92,16 @@ def update(frame):
 
 ani = FuncAnimation(fig2, update, frames=len(t), interval=50, blit=True)
 
-# Salvar como GIF em memória
+# Salvar como GIF
 gif_buffer = io.BytesIO()
-ani.save(gif_buffer, writer='pillow', format='gif')
+writer = PillowWriter(fps=10)
+ani.save(gif_buffer, writer=writer)
 gif_buffer.seek(0)
 
-# Mostrar GIF no Streamlit
+# Mostrar GIF
 st.image(gif_buffer, caption="Evolução da Epidemia (GIF)", use_column_width=True)
 
-# Criar botão de download
+# Download do GIF
 b64 = base64.b64encode(gif_buffer.read()).decode()
-href = f'<a href="data:application/octet-stream;base64,{b64}" download="seirdm_animacao.gif">📥 Baixar animação em GIF</a>'
+href = f'<a href="data:application/octet-stream;base64,{b64}" download="seirdm_animacao.gif">\U0001F4E5 Baixar animação em GIF</a>'
 st.markdown(href, unsafe_allow_html=True)
